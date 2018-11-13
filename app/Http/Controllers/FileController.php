@@ -42,8 +42,7 @@ class FileController extends Controller
             'description' => '',
             'path' => $path
         ]);
-        return redirect('/file')->with('success', 'File is uploaded');
-        
+
         //$files = $request->file('file');
         //foreach ($files as $file) {
 		//	File::create([
@@ -52,7 +51,8 @@ class FileController extends Controller
 		//		'path' => $file->store('public/storage')
 		//	]);
 		//}
-
+        return redirect('/file')->with('success', 'File is uploaded');
+        
          //$file= new File();
          //$file->filename=json_encode($data);
          
@@ -65,6 +65,14 @@ class FileController extends Controller
 	{
 		$dl = File::find($id);
 		return Storage::download($dl->path, $dl->title);
+    }
+    
+    public function destroy($id)
+	{
+        $del = File::find($id);
+        Storage::delete($del->path);
+        $del->delete();
+        return redirect('/file');
 	}
 
 	public function edit($id)
