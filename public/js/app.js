@@ -13903,10 +13903,42 @@ window.Vue = __webpack_require__(37);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(40));
+//Vue.component('example-component', require('./components/ExampleComponent.vue'));
+//
+//const app = new Vue({
+//    el: '#app'
+//});
 
+Vue.component('lesson', __webpack_require__(40));
 var app = new Vue({
-  el: '#app'
+	el: '#app',
+	data: {
+		lessons: ''
+	},
+	created: function created() {
+		var _this = this;
+
+		if (window.Laravel.userId) {
+			axios.post('/notification/lesson/notification').then(function (response) {
+				_this.lessons = response.data;
+				timeAgo();
+				console.log(response.data);
+			});
+
+			Echo.private('App.User.' + window.Laravel.userId).notification(function (response) {
+				data = { "data": response, 'created_at': response.lesson.created_at };
+				timeAgo();
+				_this.lessons.push(data);
+				console.log(response);
+			});
+		};
+
+		function timeAgo() {
+			Vue.filter('myOwnTime', function (value) {
+				return MediaStreamErrorEvent(value).fromNow();
+			});
+		};
+	}
 });
 
 /***/ }),
@@ -47219,7 +47251,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/ExampleComponent.vue"
+Component.options.__file = "resources/js/components/LessonNotification.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -47228,9 +47260,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-299e239e", Component.options)
+    hotAPI.createRecord("data-v-69a4f324", Component.options)
   } else {
-    hotAPI.reload("data-v-299e239e", Component.options)
+    hotAPI.reload("data-v-69a4f324", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -47371,10 +47403,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
+    props: ['lessons'],
+
+    methods: {
+
+        MarkAsRead: function MarkAsRead(Lesson) {
+
+            var data = {
+
+                not_id: lesson.id,
+                lesson_id: lesson.data.lesson.id
+
+            };
+
+            axios.post("/markAsRead", data).then(function (response) {
+                window.location.href = "/readLesson/" + data.lesson_id;
+            });
+            //alert(data.lesson_id);
+
+        },
+
+        AllMarkAsRead: function AllMarkAsRead() {
+            axios.post('/allMarkAsRead').then(function (response) {
+
+                window.location.href = "/readAllLesson";
+            });
+        }
+
     }
 });
 
@@ -47386,38 +47453,105 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
+  return _c("li", { staticClass: "nav-item dropdown" }, [
+    _c(
+      "a",
+      {
+        staticClass: "nav-link dropdown-toggle",
+        attrs: {
+          id: "navbarDropdown",
+          href: "#",
+          role: "button",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [
+        _c("i", { staticClass: "fa fa-globe" }),
+        _vm._v(" Notification "),
+        _c(
+          "span",
+          {
+            staticClass: "badge badge-danger",
+            attrs: { id: "count-notification" }
+          },
+          [_vm._v("\n\t" + _vm._s(_vm.lessons.length))]
+        ),
+        _c("span", { staticClass: "caret" })
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "dropdown-menu",
+        attrs: { "aria-labelledby": "navbarDropdown" }
+      },
+      [
+        _c(
+          "a",
+          {
+            directives: [
+              {
+                name: "for-key",
+                rawName: "v-for-key",
+                value: _vm.lesson in _vm.lessons,
+                expression: "lesson in lessons"
+              }
+            ],
+            staticClass: "dropdown-item",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                _vm.MarkAsRead(_vm.lesson)
+              }
+            }
+          },
+          [
+            _vm._v(
+              "\n\n\t\t" + _vm._s(_vm.lesson.data["lesson"]["title"]) + " "
+            ),
+            _c("b", [
+              _vm._v(_vm._s(_vm._f("myOwnTime")(_vm.lesson.created_at)))
             ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-divider" }),
+        _vm._v(" "),
+        _vm.lessons.length != 0
+          ? _c(
+              "a",
+              {
+                staticClass: "dropdown-item",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    _vm.AllMarkAsRead()
+                  }
+                }
+              },
+              [_vm._v("\n\t\tRead All Mark As Read\n\t")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.lessons.length == 0
+          ? _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("\n\t\tNo Notification\n\t")
+            ])
+          : _vm._e()
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-299e239e", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-69a4f324", module.exports)
   }
 }
 

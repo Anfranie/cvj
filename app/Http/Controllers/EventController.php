@@ -26,11 +26,11 @@ class EventController extends Controller
 
                 $value->title,
 
-                true,
+                false,
 
                 new \DateTime($value->start_date),
 
-                new \DateTime($value->end_date.' +1 day')
+                new \DateTime($value->end_date)
 
             );
 
