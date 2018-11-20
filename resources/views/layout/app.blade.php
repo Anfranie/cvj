@@ -42,29 +42,28 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-
                         @if(Auth::check())
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-globe"></i> Notification <span class="badge badge-danger" id="count-notification">{{auth()->user()->unreadNotifications->count() }}</span><span class="caret"></span>
                                 </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @if (auth()->user()->unreadNotifications->count())
-                            @foreach (auth()->user()->unreadNotifications as $notification)
-                            <a class="dropdown-item" href="#">
-                            
-                                {{ $notification->data['lesson']['title'] }}
-                            </a>
-                            @endforeach
-                            @else
-                            <a class="dropdown-item" href="#">
-                                No Notification
-                            </a>
-                            @endif
-                            </div>
-                        </li>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @if(auth()->user()->unreadNotifications->count())
+                                @foreach(auth()->user()->unreadNotifications as $notification)
+                                <a class="dropdown-item" href="#">
+                                
+                                    {{ $notification->data['event']['title'] }}
+                                </a>
+                                @endforeach
+                                @else
+                                <a class="dropdown-item" href="#">
+                                    No Notification
+                                </a>
+                                @endif
+                                </div>
+                            </li>
                         @endif
-k888
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">

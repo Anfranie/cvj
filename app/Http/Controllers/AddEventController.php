@@ -76,5 +76,45 @@ class AddEventController extends Controller
 		
 	}
 
+	public function _construct(){
+        $this->middleware('auth');
+    }
+
+    public function newEvent(){
+
+        $event = new Event;
+        $event->user_id = 2;
+        $event->title = 'Laravel Notification';
+        $event->body = 'This is lesson we learn about notification';
+        $event->save();
+        $user = User::where('id', '!=', 2)->get();
+        
+        if(\Notification::send($user, new NewLessonNotification(Event::latest('id')->first()))){
+            return back();
+        }
+    
+    }
+
+    public function notification(){
+        return auth()->user()->unreadNotifications;
+    }
+
+    public function markAsRead(Request $r){
+        auth()->user()->unreadNotifications->find($r->not_id)->markAsRead();
+    }
+
+    public function readEvent($Event_id){
+        $event = Event::find([$event_id]);
+        return view('event', compact('event'));
+    }
+
+    public function allMarkAsRead(){
+        auth()->user()->unreadNotifications->markAsRead();
+    }
+    
+    public function readAllEvent(){
+        $events = auth()->user()->readNotifications;
+        return view('allEvent',compact('events'));
+    }
 
 }

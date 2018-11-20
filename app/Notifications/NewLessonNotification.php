@@ -10,16 +10,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 class NewLessonNotification extends Notification
 {
     use Queueable;
-    protected $lesson;
+    protected $event;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($Lesson)
+    public function __construct($Event)
     {
-        $this->$Lesson=$Lesson;
+        $this->$Event=$Event;
     }
 
     /**
@@ -36,14 +36,14 @@ class NewLessonNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'lesson' => $this->lesson,
+            'event' => $this->event,
         ];
     }
 
     public function toBroadcast($notifiable)
     {
         return [
-            'lesson' => $this->lesson,
+            'event' => $this->event,
         ];
     }
 }

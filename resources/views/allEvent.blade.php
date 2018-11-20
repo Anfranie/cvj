@@ -5,16 +5,16 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Read Lesson</div>
+                <div class="card-header">Show Events</div>
 
                 <div class="card-body">
                     <ul class="item-group">
 
-                        @foreach($lessons as $lesson)
+                        @foreach($Events as $event)
                             <li class="list-group-item">
-                                <h2>{{ $lesson->data['lesson']['title'] }}</h2>
+                                <h2>{{ $event->data['levent']['title'] }}</h2>
                                 <hr>
-                                {{ $lesson->data['lesson']['body'] }}
+                                {{ $event->data['event']['body'] }}
                             </li>
                         @endforeach
                     </ul>

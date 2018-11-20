@@ -40,14 +40,12 @@ Route::get('/invoice', function () {
 Route::get('/pdf', 'CustomerController@fun_pdf');
 
 //Notifications
-Route::get('/lesson/create', 'LessonController@newLesson');
-Route::post('notification/lesson/notification', 'LessonController@notification');
-
-Route::post('/markAsRead', 'LessonController@markAsRead')->name('markAsRead');
-Route::get('/readLesson/{lesson_id?}', 'LessonController@readLesson')->name('readLesson');
-
-Route::post('/allMarkAsRead', 'LessonController@allMarkAsRead')->name('allMarkAsRead');
-Route::get('/readAllLesson', 'LessonController@readAllLesson')->name('readAllLesson');
+//Route::get('/lesson/create', 'LessonController@newLesson');
+Route::post('/notification', 'AddEventController@notification');
+Route::post('/markAsRead', 'AddEventController@markAsRead')->name('markAsRead');
+Route::get('/readEvent/{event_id?}', 'AddEventController@readEvent')->name('readEvent');
+Route::post('/allMarkAsRead', 'AddEventController@allMarkAsRead')->name('allMarkAsRead');
+Route::get('/readAllEvent', 'AddEventController@readAllEvent')->name('readAllEvent');
 
 
 //Admin Routes
